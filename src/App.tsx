@@ -28,7 +28,6 @@ import { NewsDetailModal } from './components/NewsDetailModal';
 import { PendaftaranModal } from './components/PendaftaranModal';
 import { AdminLoginModal } from './components/admin/AdminLoginModal';
 import { AdminDashboard } from './components/admin/AdminDashboard';
-import { PhpSourceModal } from './components/PhpSourceModal';
 
 export default function App() {
   const [data, setData] = useState<WebsiteData>(() => getStoredWebsiteData());
@@ -39,7 +38,6 @@ export default function App() {
   const [isPsbModalOpen, setIsPsbModalOpen] = useState<boolean>(false);
   const [isLoginModalOpen, setIsLoginModalOpen] = useState<boolean>(false);
   const [isAdminPanelOpen, setIsAdminPanelOpen] = useState<boolean>(false);
-  const [isPhpSourceModalOpen, setIsPhpSourceModalOpen] = useState<boolean>(false);
 
   // Sync state to storage
   const handleSaveData = (newData: WebsiteData) => {
@@ -81,7 +79,6 @@ export default function App() {
         onOpenLogin={() => setIsLoginModalOpen(true)}
         onOpenAdminPanel={() => setIsAdminPanelOpen(true)}
         onOpenPsbModal={() => setIsPsbModalOpen(true)}
-        onOpenPhpSource={() => setIsPhpSourceModalOpen(true)}
       />
 
       {/* Main Website View */}
@@ -178,12 +175,6 @@ export default function App() {
         onSaveData={handleSaveData}
         onResetDefault={handleResetDefault}
         onLogout={handleLogout}
-      />
-
-      {/* Modal Source Code PHP & MySQL */}
-      <PhpSourceModal
-        isOpen={isPhpSourceModalOpen}
-        onClose={() => setIsPhpSourceModalOpen(false)}
       />
     </div>
   );

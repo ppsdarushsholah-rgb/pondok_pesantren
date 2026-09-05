@@ -75,8 +75,8 @@ INSERT INTO \`tb_pengaturan\` (
   \`facebook\`, \`instagram\`, \`youtube\`, \`tahun_ajaran_psb\`, \`status_psb\`, \`kuota_psb\`, \`biaya_daftar\`
 ) VALUES (
   1,
-  'Pondok Pesantren Darush Sholah',
-  'Mencetak Generasi Qur\\'ani, Berakhlakul Karimah, Tafaqquh Fiddin, dan Berwawasan Global',
+  'Pondok Pesantren Salafiyah Darush Sholah',
+  'Thoriqoh Qodiriyah wa Naqsyabandiyah (TQN 165) - Salaf & Modern Terpadu',
   'KH. Ahmad Shodiq',
   'Pengasuh Pondok Pesantren Darush Sholah',
   'https://images.unsplash.com/photo-1544717305-2782549b5136?auto=format&fit=crop&q=80&w=800',

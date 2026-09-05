@@ -8,6 +8,7 @@ $pesan = '';
 if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $nama_pesantren    = clean($_POST['nama_pesantren'] ?? '');
     $tagline           = clean($_POST['tagline'] ?? '');
+    $logo              = clean($_POST['logo'] ?? 'assets/logo.jpg');
     $nama_pengasuh     = clean($_POST['nama_pengasuh'] ?? '');
     $gelar_pengasuh    = clean($_POST['gelar_pengasuh'] ?? '');
     $foto_pengasuh     = clean($_POST['foto_pengasuh'] ?? '');
@@ -25,9 +26,25 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $status_psb        = clean($_POST['status_psb'] ?? 'Buka');
     $kuota_psb         = (int)($_POST['kuota_psb'] ?? 250);
 
+    // Handle Upload File Logo Baru jika ada
+    if (isset($_FILES['file_logo']) && $_FILES['file_logo']['error'] === UPLOAD_ERR_OK) {
+        $ext = strtolower(pathinfo($_FILES['file_logo']['name'], PATHINFO_EXTENSION));
+        if (in_array($ext, ['jpg', 'jpeg', 'png', 'webp'])) {
+            $dest = __DIR__ . '/../assets/logo.jpg';
+            if (move_uploaded_file($_FILES['file_logo']['tmp_name'], $dest)) {
+                $logo = 'assets/logo.jpg';
+            }
+        }
+    }
+
+    try {
+        $pdo->query("ALTER TABLE tb_pengaturan ADD COLUMN IF NOT EXISTS logo VARCHAR(255) DEFAULT 'assets/logo.jpg'");
+    } catch (Exception $e) {}
+
     $sql = "UPDATE tb_pengaturan SET 
             nama_pesantren = :nama_pesantren,
             tagline = :tagline,
+            logo = :logo,
             nama_pengasuh = :nama_pengasuh,
             gelar_pengasuh = :gelar_pengasuh,
             foto_pengasuh = :foto_pengasuh,
@@ -50,6 +67,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
     $stmt->execute([
         ':nama_pesantren'    => $nama_pesantren,
         ':tagline'           => $tagline,
+        ':logo'              => $logo,
         ':nama_pengasuh'     => $nama_pengasuh,
         ':gelar_pengasuh'    => $gelar_pengasuh,
         ':foto_pengasuh'     => $foto_pengasuh,
@@ -68,7 +86,7 @@ if ($_SERVER['REQUEST_METHOD'] === 'POST') {
         ':kuota_psb'         => $kuota_psb
     ]);
 
-    $pesan = "Pengaturan profil & kontak pesantren berhasil disimpan!";
+    $pesan = "Pengaturan profil, logo, & kontak pesantren berhasil disimpan!";
 }
 
 $pengaturan = getPengaturan($pdo);
@@ -151,7 +169,42 @@ $pengaturan = getPengaturan($pdo);
         </div>
       <?php endif; ?>
 
-      <form method="POST" action="pengaturan.php" class="space-y-8">
+      <form method="POST" action="pengaturan.php" enctype="multipart/form-data" class="space-y-8">
+        <!-- 0. Logo & Lambang Resmi Pesantren -->
+        <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-6">
+          <div class="flex items-center justify-between border-b border-slate-100 pb-3">
+            <h3 class="text-base font-bold text-slate-900 flex items-center gap-2">
+              <i data-lucide="sparkles" class="w-4 h-4 text-amber-500"></i> Logo & Lambang Resmi Pesantren
+            </h3>
+            <span class="text-xs text-emerald-800 bg-emerald-50 border border-emerald-200 px-2.5 py-1 rounded-full font-medium">
+              Tampil di Header & Footer
+            </span>
+          </div>
+
+          <div class="flex flex-col sm:flex-row items-center gap-6 p-4 bg-slate-50 rounded-2xl border border-slate-200">
+            <!-- Preview Logo Saat Ini -->
+            <div class="w-24 h-24 rounded-2xl bg-black border-2 border-amber-400 p-1 flex items-center justify-center shadow-md shrink-0 overflow-hidden">
+              <?php 
+                $curr_logo = !empty($pengaturan['logo']) ? $pengaturan['logo'] : 'assets/logo.jpg';
+              ?>
+              <img src="<?= htmlspecialchars($curr_logo) ?>" alt="Logo Pesantren" class="w-full h-full object-contain" onerror="this.src='../assets/logo.jpg'; if(!this.complete) this.src='../WhatsApp Image 2026-09-06 at 00.55.20.jpeg';">
+            </div>
+
+            <div class="flex-1 space-y-3 text-center sm:text-left">
+              <div>
+                <label class="block text-xs font-bold text-slate-700 mb-0.5">Unggah Berkas Logo Baru</label>
+                <p class="text-xs text-slate-500">Pilih file logo dari perangkat (JPG, PNG, atau WEBP). Berkas akan otomatis diperbarui ke seluruh website.</p>
+              </div>
+              <input type="file" name="file_logo" accept="image/*" class="text-xs text-slate-600 file:mr-3 file:py-2 file:px-4 file:rounded-xl file:border-0 file:text-xs file:font-semibold file:bg-emerald-800 file:text-white hover:file:bg-emerald-900 cursor-pointer">
+              
+              <div>
+                <label class="block text-xs font-semibold text-slate-700 mt-2 mb-1">Atau Path/Tautan File Logo</label>
+                <input type="text" name="logo" value="<?= htmlspecialchars($curr_logo) ?>" placeholder="assets/logo.jpg atau link gambar" class="w-full px-3.5 py-2 rounded-xl border border-slate-300 text-xs">
+              </div>
+            </div>
+          </div>
+        </div>
+
         <!-- 1. Identitas Lembaga & PSB -->
         <div class="bg-white p-6 sm:p-8 rounded-3xl border border-slate-200 shadow-sm space-y-4">
           <h3 class="text-base font-bold text-slate-900 flex items-center gap-2 border-b border-slate-100 pb-3">

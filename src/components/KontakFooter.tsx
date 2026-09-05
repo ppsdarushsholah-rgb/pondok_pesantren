@@ -1,6 +1,7 @@
 import React from 'react';
 import { KontakConfig, WebsiteData } from '../types';
-import { MapPin, Phone, Mail, Clock, BookOpen, Facebook, Instagram, Youtube, MessageCircle, Heart } from 'lucide-react';
+import { MapPin, Phone, Mail, Clock, Facebook, Instagram, Youtube, MessageCircle, Heart } from 'lucide-react';
+import { PesantrenLogo } from './PesantrenLogo';
 
 interface KontakFooterProps {
   kontak: KontakConfig;
@@ -25,12 +26,13 @@ export const KontakFooter: React.FC<KontakFooterProps> = ({
           {/* Col 1: Identity */}
           <div className="lg:col-span-5 space-y-4">
             <div className="flex items-center gap-3">
-              <div className="w-10 h-10 rounded-xl bg-amber-500 text-emerald-950 flex items-center justify-center font-bold">
-                <BookOpen className="w-5 h-5" />
-              </div>
-              <h3 className="text-xl font-bold text-white tracking-tight">
-                {profil.namaPesantren}
-              </h3>
+              <PesantrenLogo
+                size="md"
+                logoUrl={profil.logoUrl || '/logo.jpg'}
+                namaPesantren={profil.namaPesantren}
+                showText={true}
+                textDark={false}
+              />
             </div>
 
             <p className="text-emerald-200/80 text-xs sm:text-sm leading-relaxed font-light">

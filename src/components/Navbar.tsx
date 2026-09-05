@@ -8,11 +8,11 @@ import {
   Phone,
   GraduationCap,
   Sparkles,
-  FileCode,
   ShieldCheck,
   ChevronDown
 } from 'lucide-react';
 import { WebsiteData } from '../types';
+import { PesantrenLogo } from './PesantrenLogo';
 
 interface NavbarProps {
   data: WebsiteData;
@@ -20,7 +20,6 @@ interface NavbarProps {
   onOpenLogin: () => void;
   onOpenAdminPanel: () => void;
   onOpenPsbModal: () => void;
-  onOpenPhpSource: () => void;
 }
 
 export const Navbar: React.FC<NavbarProps> = ({
@@ -29,7 +28,6 @@ export const Navbar: React.FC<NavbarProps> = ({
   onOpenLogin,
   onOpenAdminPanel,
   onOpenPsbModal,
-  onOpenPhpSource,
 }) => {
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
@@ -60,14 +58,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             </span>
           </div>
           <div className="flex items-center gap-3 text-xs">
-            <button
-              onClick={onOpenPhpSource}
-              className="flex items-center gap-1.5 bg-amber-400/20 hover:bg-amber-400 text-amber-300 hover:text-emerald-950 font-semibold px-2.5 py-0.5 rounded-full transition cursor-pointer border border-amber-400/40"
-              title="Lihat & Download Source Code PHP Native dan Database MySQL"
-            >
-              <FileCode className="w-3.5 h-3.5" />
-              <span>PHP Native & MySQL</span>
-            </button>
             <a
               href={`https://wa.me/${data.kontak.whatsapp.replace(/[^0-9]/g, '')}`}
               target="_blank"
@@ -97,19 +87,15 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Main Navigation Bar */}
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-3 flex items-center justify-between">
-        {/* Logo */}
-        <a href="#hero" className="flex items-center gap-3 group">
-          <div className="w-11 h-11 rounded-xl bg-gradient-to-br from-emerald-700 to-emerald-900 text-amber-300 flex items-center justify-center shadow-md group-hover:scale-105 transition-transform border border-emerald-600">
-            <BookOpen className="w-6 h-6" />
-          </div>
-          <div>
-            <span className="block text-lg font-bold text-emerald-950 tracking-tight leading-tight">
-              {data.profil.namaPesantren}
-            </span>
-            <span className="block text-xs font-medium text-emerald-700">
-              Pondok Pesantren Salaf & Modern Terpadu
-            </span>
-          </div>
+        {/* Logo Resmi Pondok Pesantren Salafiyah Darush Sholah */}
+        <a href="#hero" className="flex items-center group py-0.5">
+          <PesantrenLogo
+            size="md"
+            logoUrl={data.profil.logoUrl || '/logo.jpg'}
+            namaPesantren={data.profil.namaPesantren}
+            showText={true}
+            textDark={true}
+          />
         </a>
 
         {/* Desktop Nav Links */}
@@ -127,14 +113,6 @@ export const Navbar: React.FC<NavbarProps> = ({
 
         {/* Right CTA Actions */}
         <div className="hidden sm:flex items-center gap-2">
-          <button
-            onClick={onOpenPhpSource}
-            className="flex items-center gap-1.5 bg-emerald-50 hover:bg-emerald-100 text-emerald-800 border border-emerald-300 font-semibold px-3 py-2 rounded-xl transition-all cursor-pointer text-xs"
-            title="Download Full Source Code PHP Native & Database MySQL"
-          >
-            <FileCode className="w-4 h-4 text-emerald-700" />
-            <span>Unduh PHP Native</span>
-          </button>
           <button
             onClick={onOpenPsbModal}
             className="flex items-center gap-2 bg-gradient-to-r from-emerald-800 to-emerald-700 hover:from-emerald-900 hover:to-emerald-800 text-white font-semibold px-4 py-2 rounded-xl shadow-xs hover:shadow-md transition-all cursor-pointer text-sm"
@@ -158,7 +136,18 @@ export const Navbar: React.FC<NavbarProps> = ({
 
       {/* Mobile Drawer */}
       {mobileMenuOpen && (
-        <div className="lg:hidden bg-white border-b border-emerald-100 px-4 pt-2 pb-6 space-y-2 shadow-lg animate-fadeIn">
+        <div className="lg:hidden bg-white border-b border-emerald-100 px-4 pt-3 pb-6 space-y-2 shadow-lg animate-fadeIn">
+          {/* Mobile Official Logo Header */}
+          <div className="pb-2 mb-1 border-b border-emerald-100/60">
+            <PesantrenLogo
+              size="sm"
+              logoUrl={data.profil.logoUrl || '/logo.jpg'}
+              namaPesantren={data.profil.namaPesantren}
+              showText={true}
+              textDark={true}
+            />
+          </div>
+
           {navLinks.map((link) => (
             <a
               key={link.name}
@@ -179,17 +168,6 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <GraduationCap className="w-4 h-4 text-amber-300" />
               <span>Daftar Santri Baru (PSB)</span>
-            </button>
-
-            <button
-              onClick={() => {
-                setMobileMenuOpen(false);
-                onOpenPhpSource();
-              }}
-              className="w-full flex items-center justify-center gap-2 bg-emerald-50 text-emerald-900 border border-emerald-300 font-semibold py-2 rounded-xl text-sm"
-            >
-              <FileCode className="w-4 h-4 text-emerald-700" />
-              <span>Source Code PHP Native & MySQL</span>
             </button>
 
             {isAdmin ? (

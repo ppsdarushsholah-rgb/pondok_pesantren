@@ -20,10 +20,11 @@ export const defaultWebsiteData: WebsiteData = {
     isiSambutan: "Assalamu'alaikum Warahmatullahi Wabarakatuh.\n\nSelamat datang di portal resmi Pondok Pesantren Darush Sholah. Pesantren ini hadir sebagai benteng moral dan keilmuan Islam bagi generasi muda. Kami berkomitmen untuk mendidik para santri agar melandasi kehidupannya dengan kedalaman ilmu syariat, keluhuran akhlakul karimah, serta kecakapan intelektual untuk menjawab tantangan zaman.\n\nSemoga keberadaan website ini memudahkan para wali santri, alumni, dan masyarakat luas dalam memperoleh informasi tepercaya seputar pengajaran, pendaftaran, dan perkembangan santri di pesantren kami.",
   },
   profil: {
-    namaPesantren: "Pondok Pesantren Darush Sholah",
-    singkatan: "PPDS",
+    namaPesantren: "Pondok Pesantren Salafiyah Darush Sholah",
+    singkatan: "PPS Darush Sholah - TQN 165",
     tahunBerdiri: "1988",
-    sejarah: "Berdiri sejak tahun 1988 oleh para ulama dan tokoh masyarakat, Pondok Pesantren Darush Sholah berawal dari majelis taklim dan madrasah diniyah sederhana. Berkat pertolongan Allah SWT serta kepedulian para dermawan dan masyarakat, kini PPDS berkembang pesat menjadi pesantren terpadu yang menaungi ribuan santri dari seluruh pelosok Nusantara.",
+    logoUrl: "/logo.jpg",
+    sejarah: "Berdiri sejak tahun 1988 oleh para ulama dan tokoh masyarakat, Pondok Pesantren Salafiyah Darush Sholah (TQN 165) berawal dari majelis taklim dan madrasah diniyah salafiyah. Berkat pertolongan Allah SWT serta kepedulian para dermawan dan masyarakat, kini PPDS berkembang pesat menjadi pesantren terpadu yang menaungi ribuan santri dari seluruh pelosok Nusantara.",
     visi: "Terwujudnya Lembaga Pendidikan Islam Unggulan dalam Mencetak Ulama' yang Intelektual dan Intelektual yang Ulama', Berakhlaqul Karimah serta Mandiri.",
     misi: [
       "Menyelenggarakan pembelajaran Al-Qur'an dan Al-Hadits secara tartil serta mutqin.",

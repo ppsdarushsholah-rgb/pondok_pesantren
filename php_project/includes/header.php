@@ -68,14 +68,19 @@ $current_page = basename($_SERVER['PHP_SELF']);
   <header class="sticky top-0 z-50 bg-white/95 backdrop-blur-md shadow-sm border-b border-emerald-100 transition">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
       <div class="flex justify-between items-center h-20">
-        <!-- Logo -->
+        <!-- Logo Resmi -->
         <a href="index.php" class="flex items-center gap-3 group">
-          <div class="w-12 h-12 rounded-2xl bg-emerald-900 flex items-center justify-center text-amber-400 shadow-md group-hover:scale-105 transition transform">
-            <i data-lucide="shield-check" class="w-7 h-7"></i>
+          <div class="w-12 h-12 rounded-2xl overflow-hidden bg-black border-2 border-amber-400/80 shadow-md flex items-center justify-center p-0.5 group-hover:scale-105 transition transform shrink-0">
+            <?php $current_logo = !empty($pengaturan['logo']) ? $pengaturan['logo'] : (file_exists(__DIR__ . '/../assets/logo.jpg') ? 'assets/logo.jpg' : 'WhatsApp Image 2026-09-06 at 00.55.20.jpeg'); ?>
+            <img src="<?= htmlspecialchars($current_logo) ?>" alt="Logo Resmi PPS Darush Sholah" class="w-full h-full object-contain" onerror="this.src='assets/logo.jpg'; if(!this.complete) this.src='WhatsApp Image 2026-09-06 at 00.55.20.jpeg';">
           </div>
           <div>
-            <h1 class="font-bold text-lg text-emerald-950 leading-tight group-hover:text-emerald-700 transition">DARUSH SHOLAH</h1>
-            <p class="text-xs text-emerald-600 font-medium tracking-wide">Pondok Pesantren Salaf & Terpadu</p>
+            <span class="text-[10px] font-bold uppercase tracking-wider text-emerald-800 block leading-tight">Pondok Pesantren Salafiyah</span>
+            <h1 class="font-extrabold text-lg text-emerald-950 leading-tight group-hover:text-emerald-700 transition">DARUSH SHOLAH</h1>
+            <div class="flex items-center gap-1.5 mt-0.5">
+              <span class="bg-amber-100 text-amber-800 font-bold px-1.5 py-0.2 rounded text-[9px] border border-amber-300">TQN 165</span>
+              <span class="text-[10px] text-emerald-700 font-medium">Salaf & Modern Terpadu</span>
+            </div>
           </div>
         </a>
 

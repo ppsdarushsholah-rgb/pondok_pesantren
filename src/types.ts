@@ -25,6 +25,7 @@ export interface ProfilConfig {
   sejarah: string;
   visi: string;
   misi: string[];
+  logoUrl?: string;
 }
 
 export interface BeritaItem {

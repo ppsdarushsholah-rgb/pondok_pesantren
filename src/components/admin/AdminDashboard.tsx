@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { WebsiteData, BeritaItem, GaleriItem, FasilitasItem, ProgramItem, PendaftarItem } from '../../types';
 import { fileToBase64Compressed } from '../../utils/storage';
+import { PesantrenLogo } from '../PesantrenLogo';
 import {
   X,
   Upload,
@@ -23,7 +24,11 @@ import {
   FileText,
   Download,
   UploadCloud,
-  Sparkles
+  Sparkles,
+  Check,
+  RefreshCw,
+  Eye,
+  Sliders
 } from 'lucide-react';
 
 interface AdminDashboardProps {
@@ -46,8 +51,8 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
   if (!isOpen) return null;
 
   const [activeTab, setActiveTab] = useState<
-    'hero' | 'sambutan' | 'berita' | 'galeri' | 'fasilitas' | 'psb' | 'pendaftar' | 'backup'
-  >('hero');
+    'logo' | 'hero' | 'sambutan' | 'berita' | 'galeri' | 'fasilitas' | 'psb' | 'pendaftar' | 'backup'
+  >('logo');
 
   // Form states initialized with prop data
   const [websiteData, setWebsiteData] = useState<WebsiteData>(data);
@@ -157,14 +162,15 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
           </div>
 
           {[
-            { id: 'hero', label: '1. Banner Hero Utama', icon: Layout },
-            { id: 'sambutan', label: '2. Sambutan Pengasuh', icon: BookOpen },
-            { id: 'berita', label: '3. Berita & Kegiatan', icon: Newspaper },
-            { id: 'galeri', label: '4. Galeri Foto', icon: ImageIcon },
-            { id: 'fasilitas', label: '5. Fasilitas & Program', icon: Building },
-            { id: 'psb', label: '6. Info PSB & Kontak', icon: Phone },
-            { id: 'pendaftar', label: '7. Data Pendaftar PSB', icon: Users, badge: websiteData.pendaftar.length },
-            { id: 'backup', label: '8. Cadangan & Reset Data', icon: Download },
+            { id: 'logo', label: '1. Ganti Logo & Ikon', icon: Sparkles },
+            { id: 'hero', label: '2. Banner Hero Utama', icon: Layout },
+            { id: 'sambutan', label: '3. Sambutan Pengasuh', icon: BookOpen },
+            { id: 'berita', label: '4. Berita & Kegiatan', icon: Newspaper },
+            { id: 'galeri', label: '5. Galeri Foto', icon: ImageIcon },
+            { id: 'fasilitas', label: '6. Fasilitas & Program', icon: Building },
+            { id: 'psb', label: '7. Info PSB & Kontak', icon: Phone },
+            { id: 'pendaftar', label: '8. Data Pendaftar PSB', icon: Users, badge: websiteData.pendaftar.length },
+            { id: 'backup', label: '9. Cadangan & Reset Data', icon: Download },
           ].map((tab) => {
             const Icon = tab.icon;
             const isActive = activeTab === tab.id;
@@ -198,7 +204,371 @@ export const AdminDashboard: React.FC<AdminDashboardProps> = ({
 
         {/* Tab Body View */}
         <main className="flex-1 p-4 sm:p-8 overflow-y-auto">
-          {/* TAB 1: HERO BANNER */}
+          {/* TAB 1: GANTI LOGO & IDENTITAS */}
+          {activeTab === 'logo' && (
+            <div className="max-w-4xl space-y-6 bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
+              <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 pb-4 border-b border-slate-100">
+                <div>
+                  <div className="flex items-center gap-2">
+                    <span className="p-1.5 rounded-lg bg-amber-500/20 text-amber-600">
+                      <Sparkles className="w-5 h-5" />
+                    </span>
+                    <h3 className="text-xl font-bold text-emerald-950">Kelola & Ganti Logo Pesantren</h3>
+                  </div>
+                  <p className="text-xs text-slate-500 mt-1">
+                    Ubah icon logo pondok pesantren. Unggah foto langsung dari HP/komputer, gunakan tautan logo, atau pilih preset lambang resmi.
+                  </p>
+                </div>
+
+                <button
+                  type="button"
+                  onClick={() => handleSaveAll(websiteData)}
+                  className="inline-flex items-center justify-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-bold px-4 py-2.5 rounded-xl shadow-xs transition-colors cursor-pointer text-xs shrink-0"
+                >
+                  <Save className="w-4 h-4" /> Simpan Logo & Identitas
+                </button>
+              </div>
+
+              {/* LIVE PREVIEW BANNER */}
+              <div className="space-y-3">
+                <div className="flex items-center justify-between">
+                  <span className="text-xs font-bold text-slate-700 flex items-center gap-1.5">
+                    <Eye className="w-4 h-4 text-emerald-700" /> Pratinjau Tampilan Logo Langsung (Real-Time)
+                  </span>
+                  <span className="text-[11px] text-emerald-700 font-medium">
+                    Tampilan otomatis menyesuaikan di website
+                  </span>
+                </div>
+
+                <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
+                  {/* Pratinjau Mode Terang / Navbar */}
+                  <div className="p-4 rounded-2xl bg-white border border-slate-200 shadow-xs space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-slate-400">
+                      <span>Tampilan di Navbar Atas (Latar Putih)</span>
+                      <span className="px-1.5 py-0.5 rounded bg-slate-100 text-slate-600 text-[10px]">Header</span>
+                    </div>
+                    <div className="p-3 bg-slate-50 rounded-xl border border-slate-100 flex items-center justify-between overflow-hidden">
+                      <PesantrenLogo
+                        size="md"
+                        logoUrl={websiteData.profil.logoUrl || '/logo.jpg'}
+                        namaPesantren={websiteData.profil.namaPesantren}
+                        showText={true}
+                        textDark={true}
+                      />
+                    </div>
+                  </div>
+
+                  {/* Pratinjau Mode Gelap / Footer */}
+                  <div className="p-4 rounded-2xl bg-emerald-950 text-white border border-emerald-800 shadow-xs space-y-2">
+                    <div className="flex items-center justify-between text-[11px] font-semibold text-emerald-300/70">
+                      <span>Tampilan di Footer & Dokumen (Latar Gelap)</span>
+                      <span className="px-1.5 py-0.5 rounded bg-emerald-900 text-emerald-300 text-[10px]">Footer</span>
+                    </div>
+                    <div className="p-3 bg-emerald-900/60 rounded-xl border border-emerald-800 flex items-center justify-between overflow-hidden">
+                      <PesantrenLogo
+                        size="md"
+                        logoUrl={websiteData.profil.logoUrl || '/logo.jpg'}
+                        namaPesantren={websiteData.profil.namaPesantren}
+                        showText={true}
+                        textDark={false}
+                      />
+                    </div>
+                  </div>
+                </div>
+
+                {/* Ukuran & Format Berbeda */}
+                <div className="p-3 bg-slate-50 rounded-xl border border-slate-200 flex flex-wrap items-center gap-6 text-xs text-slate-600">
+                  <span className="font-semibold text-slate-700">Variasi Ikon:</span>
+                  <div className="flex items-center gap-2">
+                    <PesantrenLogo size="sm" logoUrl={websiteData.profil.logoUrl || '/logo.jpg'} showText={false} />
+                    <span className="text-[11px]">Kecil (40px)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <PesantrenLogo size="md" logoUrl={websiteData.profil.logoUrl || '/logo.jpg'} showText={false} />
+                    <span className="text-[11px]">Sedang (56px)</span>
+                  </div>
+                  <div className="flex items-center gap-2">
+                    <PesantrenLogo size="lg" logoUrl={websiteData.profil.logoUrl || '/logo.jpg'} showText={false} />
+                    <span className="text-[11px]">Besar (80px)</span>
+                  </div>
+                </div>
+              </div>
+
+              {/* METODE PENGGANTIAN LOGO */}
+              <div className="space-y-4 pt-2">
+                <h4 className="text-sm font-bold text-slate-800 flex items-center gap-2">
+                  <Upload className="w-4 h-4 text-emerald-700" /> Metode Penggantian Logo
+                </h4>
+
+                {/* METODE 1: Unggah File Foto Langsung */}
+                <div className="p-5 bg-emerald-50/70 rounded-2xl border-2 border-dashed border-emerald-300 hover:border-emerald-500 transition-colors">
+                  <div className="flex flex-col sm:flex-row items-center gap-5">
+                    <div className="w-24 h-24 rounded-2xl bg-black border-2 border-amber-400/80 p-1 flex items-center justify-center shadow-md shrink-0 overflow-hidden">
+                      <img
+                        src={websiteData.profil.logoUrl || '/logo.jpg'}
+                        alt="Logo Saat Ini"
+                        className="w-full h-full object-contain"
+                        onError={(e) => {
+                          (e.target as HTMLImageElement).src = '/logo.jpg';
+                        }}
+                      />
+                    </div>
+
+                    <div className="space-y-2 text-center sm:text-left flex-1">
+                      <div className="font-bold text-sm text-emerald-950">
+                        1. Unggah File Foto / Logo Baru dari Perangkat
+                      </div>
+                      <p className="text-xs text-emerald-800/80">
+                        Mendukung format gambar foto: JPG, PNG, WEBP, atau JPEG. Foto langsung dikompresi dan dipasang ke seluruh halaman website.
+                      </p>
+
+                      <div className="pt-1 flex flex-wrap gap-2 justify-center sm:justify-start">
+                        <label className="inline-flex items-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-white font-bold text-xs px-4 py-2.5 rounded-xl shadow-xs cursor-pointer transition-all">
+                          <Upload className="w-4 h-4 text-amber-300" />
+                          <span>Pilih & Unggah File Logo Baru</span>
+                          <input
+                            type="file"
+                            accept="image/*"
+                            className="hidden"
+                            onChange={(e) =>
+                              handleImageUpload(e, (base64) => {
+                                const updated = {
+                                  ...websiteData,
+                                  profil: { ...websiteData.profil, logoUrl: base64 },
+                                };
+                                setWebsiteData(updated);
+                                onSaveData(updated);
+                                showToast('Logo baru berhasil diunggah & disimpan!');
+                              })
+                            }
+                          />
+                        </label>
+
+                        {websiteData.profil.logoUrl && websiteData.profil.logoUrl !== '/logo.jpg' && (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              const updated = {
+                                ...websiteData,
+                                profil: {
+                                  ...websiteData.profil,
+                                  logoUrl: '/logo.jpg',
+                                },
+                              };
+                              setWebsiteData(updated);
+                              onSaveData(updated);
+                              showToast('Logo dikembalikan ke default /logo.jpg');
+                            }}
+                            className="inline-flex items-center gap-1.5 bg-slate-200 hover:bg-slate-300 text-slate-700 text-xs font-semibold px-3 py-2 rounded-xl transition-colors cursor-pointer"
+                          >
+                            <RotateCcw className="w-3.5 h-3.5" /> Reset ke Default /logo.jpg
+                          </button>
+                        )}
+                      </div>
+                    </div>
+                  </div>
+                </div>
+
+                {/* METODE 2: Pilihan Cepat / Preset Resmi */}
+                <div className="p-4 bg-slate-50 rounded-2xl border border-slate-200 space-y-3">
+                  <div className="font-bold text-xs text-slate-800 flex items-center justify-between">
+                    <span>2. Pilihan Cepat Preset Logo Resmi Pesantren</span>
+                    <span className="text-[10px] text-slate-500 font-normal">Klik untuk langsung menerapkan</span>
+                  </div>
+
+                  <div className="grid grid-cols-1 sm:grid-cols-3 gap-2.5">
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = {
+                          ...websiteData,
+                          profil: {
+                            ...websiteData.profil,
+                            logoUrl: '/logo.jpg',
+                          },
+                        };
+                        setWebsiteData(updated);
+                        onSaveData(updated);
+                        showToast('Logo Preset /logo.jpg diterapkan!');
+                      }}
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-3 ${
+                        websiteData.profil.logoUrl === '/logo.jpg' || !websiteData.profil.logoUrl
+                          ? 'border-emerald-600 bg-emerald-50/80 ring-2 ring-emerald-600/30'
+                          : 'border-slate-200 bg-white hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-black border border-amber-400 p-0.5 shrink-0 overflow-hidden flex items-center justify-center">
+                        <img src="/logo.jpg" alt="Preset 1" className="w-full h-full object-contain" />
+                      </div>
+                      <div className="truncate">
+                        <div className="text-xs font-bold text-slate-900 truncate">Foto Resmi Utama</div>
+                        <div className="text-[10px] text-slate-500 truncate">Berkas /logo.jpg</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = {
+                          ...websiteData,
+                          profil: {
+                            ...websiteData.profil,
+                            logoUrl: '/WhatsApp Image 2026-09-06 at 00.55.20.jpeg',
+                          },
+                        };
+                        setWebsiteData(updated);
+                        onSaveData(updated);
+                        showToast('Logo WhatsApp Image diterapkan!');
+                      }}
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-3 ${
+                        websiteData.profil.logoUrl === '/WhatsApp Image 2026-09-06 at 00.55.20.jpeg'
+                          ? 'border-emerald-600 bg-emerald-50/80 ring-2 ring-emerald-600/30'
+                          : 'border-slate-200 bg-white hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-black border border-amber-400 p-0.5 shrink-0 overflow-hidden flex items-center justify-center">
+                        <img src="/WhatsApp Image 2026-09-06 at 00.55.20.jpeg" alt="WhatsApp Image" className="w-full h-full object-contain" />
+                      </div>
+                      <div className="truncate">
+                        <div className="text-xs font-bold text-slate-900 truncate">File WhatsApp Asli</div>
+                        <div className="text-[10px] text-slate-500 truncate">Upload 00.55.20</div>
+                      </div>
+                    </button>
+
+                    <button
+                      type="button"
+                      onClick={() => {
+                        const updated = {
+                          ...websiteData,
+                          profil: {
+                            ...websiteData.profil,
+                            logoUrl: 'vector',
+                          },
+                        };
+                        setWebsiteData(updated);
+                        onSaveData(updated);
+                        showToast('Logo Vector Emblem Emas diterapkan!');
+                      }}
+                      className={`p-3 rounded-xl border text-left transition-all cursor-pointer flex items-center gap-3 ${
+                        websiteData.profil.logoUrl === 'vector'
+                          ? 'border-emerald-600 bg-emerald-50/80 ring-2 ring-emerald-600/30'
+                          : 'border-slate-200 bg-white hover:bg-slate-50'
+                      }`}
+                    >
+                      <div className="w-10 h-10 rounded-lg bg-emerald-950 border border-amber-400 p-0.5 shrink-0 overflow-hidden flex items-center justify-center">
+                        <PesantrenLogo size="sm" logoUrl="" showText={false} />
+                      </div>
+                      <div className="truncate">
+                        <div className="text-xs font-bold text-slate-900 truncate">Vector Emblem Emas</div>
+                        <div className="text-[10px] text-slate-500 truncate">Grafis Tajam SVG</div>
+                      </div>
+                    </button>
+                  </div>
+                </div>
+
+                {/* METODE 3: Input Tautan / URL Langsung */}
+                <div className="space-y-2">
+                  <label className="block text-xs font-bold text-slate-700">
+                    3. Atau Masukkan Tautan / Path URL Logo Secara Manual
+                  </label>
+                  <div className="flex gap-2">
+                    <input
+                      type="text"
+                      placeholder="/logo.jpg atau https://example.com/logo.png"
+                      value={websiteData.profil.logoUrl || ''}
+                      onChange={(e) =>
+                        setWebsiteData({
+                          ...websiteData,
+                          profil: { ...websiteData.profil, logoUrl: e.target.value },
+                        })
+                      }
+                      className="flex-1 px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-700"
+                    />
+                    <button
+                      type="button"
+                      onClick={() => {
+                        handleSaveAll(websiteData);
+                      }}
+                      className="bg-emerald-800 hover:bg-emerald-900 text-white px-4 py-2.5 rounded-xl text-xs font-bold shrink-0 transition-colors cursor-pointer"
+                    >
+                      Terapkan & Simpan
+                    </button>
+                  </div>
+                  <p className="text-[11px] text-slate-400">
+                    Tips: Anda dapat menggunakan gambar yang tersimpan di server lokal seperti <code className="text-emerald-700 font-mono">/logo.jpg</code> atau URL eksternal gambar.
+                  </p>
+                </div>
+              </div>
+
+              {/* IDENTITAS NAMA & SLOGAN PESANTREN */}
+              <div className="space-y-4 pt-4 border-t border-slate-200">
+                <div className="flex items-center gap-2">
+                  <Sliders className="w-4 h-4 text-emerald-700" />
+                  <h4 className="text-sm font-bold text-slate-800">Teks Identitas di Samping Logo</h4>
+                </div>
+
+                <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Nama Pesantren</label>
+                    <input
+                      type="text"
+                      value={websiteData.profil.namaPesantren}
+                      onChange={(e) =>
+                        setWebsiteData({
+                          ...websiteData,
+                          profil: { ...websiteData.profil, namaPesantren: e.target.value },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-700"
+                    />
+                    <p className="text-[11px] text-slate-400 mt-1">Tampil sebagai judul utama di header.</p>
+                  </div>
+
+                  <div>
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Singkatan / Lencana</label>
+                    <input
+                      type="text"
+                      value={websiteData.profil.singkatan}
+                      onChange={(e) =>
+                        setWebsiteData({
+                          ...websiteData,
+                          profil: { ...websiteData.profil, singkatan: e.target.value },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-700"
+                    />
+                    <p className="text-[11px] text-slate-400 mt-1">Contoh: PPS Darush Sholah - TQN 165</p>
+                  </div>
+
+                  <div className="sm:col-span-2">
+                    <label className="block text-xs font-bold text-slate-700 mb-1">Tahun Berdiri</label>
+                    <input
+                      type="text"
+                      value={websiteData.profil.tahunBerdiri}
+                      onChange={(e) =>
+                        setWebsiteData({
+                          ...websiteData,
+                          profil: { ...websiteData.profil, tahunBerdiri: e.target.value },
+                        })
+                      }
+                      className="w-full px-3.5 py-2.5 rounded-xl border border-slate-300 text-sm focus:ring-2 focus:ring-emerald-700"
+                    />
+                  </div>
+                </div>
+              </div>
+
+              {/* TOMBOL SIMPAN BESAR */}
+              <div className="pt-4 border-t border-slate-200 flex justify-end">
+                <button
+                  type="button"
+                  onClick={() => handleSaveAll(websiteData)}
+                  className="flex items-center gap-2 bg-emerald-800 hover:bg-emerald-900 text-amber-300 font-bold px-6 py-3 rounded-xl shadow-md transition-all cursor-pointer text-sm"
+                >
+                  <Save className="w-5 h-5" /> Simpan Semua Perubahan Logo
+                </button>
+              </div>
+            </div>
+          )}
           {activeTab === 'hero' && (
             <div className="max-w-4xl space-y-6 bg-white p-6 sm:p-8 rounded-3xl shadow-sm border border-slate-200">
               <div>

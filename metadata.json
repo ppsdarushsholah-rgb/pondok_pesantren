@@ -1,6 +1,6 @@
 {
-  "name": "Website Pondok Pesantren",
-  "description": "Website resmi Pondok Pesantren dilengkapi dengan Admin Panel untuk mengelola konten, berita, program, dan galeri foto.",
+  "name": "Pondok Pesantren Salafiyah Darush Sholah",
+  "description": "Portal Resmi Pondok Pesantren Salafiyah Darush Sholah (TQN 165) - Salaf & Modern Terpadu, Pendaftaran Santri Baru (PSB) Online & Sistem Manajemen Pesantren.",
   "requestFramePermissions": [],
   "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
 }

@@ -9,10 +9,14 @@ $pengaturan = getPengaturan($pdo);
         <!-- Kolom 1: Profil Singkat -->
         <div class="space-y-4">
           <div class="flex items-center gap-3">
-            <div class="w-10 h-10 rounded-xl bg-amber-500 text-emerald-950 flex items-center justify-center font-bold shadow">
-              <i data-lucide="shield-check" class="w-6 h-6"></i>
+            <div class="w-11 h-11 rounded-xl overflow-hidden bg-black border border-amber-400 shadow flex items-center justify-center p-0.5 shrink-0">
+              <?php $footer_logo = !empty($pengaturan['logo']) ? $pengaturan['logo'] : (file_exists(__DIR__ . '/../assets/logo.jpg') ? 'assets/logo.jpg' : 'WhatsApp Image 2026-09-06 at 00.55.20.jpeg'); ?>
+              <img src="<?= htmlspecialchars($footer_logo) ?>" alt="Logo PPS Darush Sholah" class="w-full h-full object-contain" onerror="this.src='assets/logo.jpg'; if(!this.complete) this.src='WhatsApp Image 2026-09-06 at 00.55.20.jpeg';">
             </div>
-            <span class="font-bold text-lg text-white"><?= htmlspecialchars($pengaturan['nama_pesantren']) ?></span>
+            <div>
+              <span class="text-[9px] uppercase tracking-wider text-amber-400 font-bold block">Pondok Pesantren Salafiyah</span>
+              <span class="font-extrabold text-base text-white block">DARUSH SHOLAH</span>
+            </div>
           </div>
           <p class="text-sm text-emerald-200/80 leading-relaxed">
             Membina generasi sholihin yang berakhlak mulia, hafidz Al-Qur'an, faqih fiddin, dan siap memimpin kemajuan bangsa.
