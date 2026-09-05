@@ -1,0 +1,6 @@
+{
+  "name": "Website Pondok Pesantren",
+  "description": "Website resmi Pondok Pesantren dilengkapi dengan Admin Panel untuk mengelola konten, berita, program, dan galeri foto.",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}
